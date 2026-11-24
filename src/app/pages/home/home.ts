@@ -1,39 +1,10 @@
 import { Component } from '@angular/core';
+import { ListConf } from '../list-conf/list-conf';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [ListConf],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
-export class Home {
-  //attributes
-  title: Conference[];
-  list: Conference[];
-
-  constructor() {
-    //services
-  }
-  //methods
-  ngOnInit() {
-    this.list = [
-      {
-        title: 'conference',
-        description: 'This is a conference',
-        date: '12-03-2026',
-        nbrMax: 1,
-        nbrReservation: 0,
-        picture: 'https://picsum.photos/200/200',
-
-
-      },
-    ];
-  }
-
-  change() {
-    //action
-  }
-  participate(conf: Conference) {
-    conf.nbrReservation++;
-  }
-}
+export class Home {}

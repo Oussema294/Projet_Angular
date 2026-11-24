@@ -1,43 +1,205 @@
 
-<div class="container mt-4">
+<div class="container py-5" id="conferences">
 
-  <h2 class="text-center mb-4">Liste des conférences</h2>
+  <!-- Titre -->
+  <div class="text-center mb-5">
+    <span class="section-label">ÉVÉNEMENTS</span>
+    <h2 class="main-title mt-2">Découvrez nos conférences</h2>
+    <p class="text-muted">
+      Participez à nos événements et développez vos connaissances.
+    </p>
+  </div>
 
-  <table class="table table-bordered table-striped table-hover">
+  <!-- Recherche -->
+  <div class="search-container mb-4">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Rechercher une conférence par titre..."
+      (input)="searchTitle = $any($event.target).value">
+  </div>
 
-    <thead class="table-dark">
-    <tr>
-      <th>Title</th>
-      <th>Date</th>
-      <th>Available places</th>
-      <th>Participate</th>
-    </tr>
-    </thead>
+  <!-- Nombre de conférences -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold">Nos conférences</h4>
+    <span class="conference-count">
+      {{ filteredList.length }} conférences
+    </span>
+  </div>
 
-    <tbody>
+  <!-- Cartes -->
+  <div class="row g-4">
 
-      @for (conf of list; track conf.title) {
-        <tr>
+    @for (conf of filteredList; track conf.title) {
 
-          <td>{{conf.title}}</td>
+      <div class="col-12 col-sm-6 col-lg-3">
 
-          <td>{{conf.date}}</td>
+        <div class="conference-card">
 
-          <td>
-            {{conf.nbrMax - conf.nbrReservation}}
-          </td>
+          <!-- Image -->
+          <div class="image-container">
+            <img
+              [src]="conf.picture"
+              [alt]="conf.title"
+              class="card-image">
 
-          <td>
-            <button class="btn btn-sm btn-primary">
-              Participate
+            <span class="image-badge">
+              CONFÉRENCE
+            </span>
+          </div>
+
+          <!-- Contenu -->
+          <div class="card-content">
+
+            <h5 class="card-title">
+              {{ conf.title }}
+            </h5>
+
+            <p class="card-description">
+              {{ conf.description }}
+            </p>
+
+            <div class="rating">
+              ★★★★★
+            </div>
+
+            <div class="card-info">
+              <span class="info-label">Date</span>
+              <strong>{{ conf.date }}</strong>
+            </div>
+
+            <div class="card-info">
+              <span class="info-label">Places disponibles</span>
+
+              <strong [class.text-danger]="isComplet(conf)">
+                {{ placesDisponibles(conf) }}
+              </strong>
+            </div>
+
+            <button
+              class="btn participate-btn w-100 mt-3"
+              [disabled]="isComplet(conf)"
+              (click)="participate(conf)">
+
+              @if (isComplet(conf)) {
+                Complet
+              } @else {
+                Participer
+              }
+
             </button>
-          </td>
 
-        </tr>
-      }
+          </div>
+        </div>
 
-    </tbody>
+      </div>
 
-  </table>
+    } @empty {
+
+      <div class="col-12 text-center py-5">
+        <h5>Aucune conférence trouvée</h5>
+        <p class="text-muted">
+          Essayez avec un autre titre.
+        </p>
+      </div>
+
+    }
+
+  </div>
+
+</div>
+
+
+<!-- ================================= -->
+<!-- SECTION UTILISATEURS -->
+<!-- ================================= -->
+
+<div class="container py-5" id="users">
+
+  <!-- Titre -->
+  <div class="text-center mb-5">
+    <span class="section-label">COMMUNAUTÉ</span>
+    <h2 class="main-title mt-2">Découvrez nos utilisateurs</h2>
+    <p class="text-muted">
+      Consultez les membres de notre plateforme.
+    </p>
+  </div>
+
+  <!-- Recherche utilisateurs -->
+  <div class="search-container mb-4">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Rechercher un utilisateur par nom..."
+      (input)="searchUser = $any($event.target).value">
+  </div>
+
+  <!-- Nombre d'utilisateurs -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold">Nos utilisateurs</h4>
+
+    <span class="conference-count">
+      {{ filteredUsers.length }} utilisateurs
+    </span>
+  </div>
+
+  <!-- Cartes utilisateurs -->
+  <div class="row g-4">
+
+    @for (user of filteredUsers; track user.id) {
+
+      <div class="col-12 col-sm-6 col-lg-3">
+
+        <div class="conference-card user-card">
+
+          <!-- Avatar -->
+          <div class="user-avatar-container">
+            <div class="user-avatar">
+              {{ user.name.charAt(0).toUpperCase() }}
+            </div>
+          </div>
+
+          <!-- Contenu -->
+          <div class="card-content text-center">
+
+            <h5 class="card-title">
+              {{ user.name }}
+            </h5>
+
+            <p class="card-description">
+              {{ user.email }}
+            </p>
+
+            <div class="user-role">
+              @if (user.role === 'Admin') {
+                <span class="badge bg-primary">Administrateur</span>
+              } @else {
+                <span class="badge bg-secondary">Utilisateur</span>
+              }
+            </div>
+
+            <div class="card-info mt-3">
+              <span class="info-label">Identifiant</span>
+              <strong>#{{ user.id }}</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    } @empty {
+
+      <div class="col-12 text-center py-5">
+        <h5>Aucun utilisateur trouvé</h5>
+        <p class="text-muted">
+          Essayez avec un autre nom.
+        </p>
+      </div>
+
+    }
+
+  </div>
 
 </div>
